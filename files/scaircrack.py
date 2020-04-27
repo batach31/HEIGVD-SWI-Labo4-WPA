@@ -46,6 +46,13 @@ APmac       = a2b_hex(wpa[0].addr3.replace(':','')) # il contient aussi l'adress
 Clientmac   = a2b_hex(wpa[1].addr1.replace(':','')) # le client répond avec son adresse
 hash_algo   = bytes([wpa[8].load[2:3][0] & b'\x03'[0]]) # extracting the bits that tell us the use algo (sha1 or md5)
 
+# select the hashing algo to use
+if hash_algo == b'\x02':
+	algo = hashlib.sha1
+else:
+	algo = hashlib.md5
+
+
 # Authenticator and Supplicant Nonces
 ANonce      = wpa[5].load[13:45] # le premier handshake contient le ANonce # a2b_hex("90773b9a9661fee1f406e8989c912b45b029c652224e8b561417672ca7e0fd91")
 SNonce      = wpa[6].load[13:45] # le second handshake contient le SNonce # a2b_hex("7b3826876d14ff301aee7c1072b5e9091e21169841bce9ae8a3f24628f264577")
@@ -72,12 +79,6 @@ with open('wordlist.txt') as fp:
         ptk = customPRF512(pmk,str.encode(A),B)
 
         # calculate MIC over EAPOL payload (Michael)- The ptk is, in fact, KCK|KEK|TK|MICK
-
-        # select the hashing algo to use
-        if hash_algo == b'\x02':
-            algo = hashlib.sha1
-        else:
-            algo = hashlib.md5
 
         # compute mic from pass phrase
         mic = hmac.new(ptk[0:16],data,algo).digest()[:16]

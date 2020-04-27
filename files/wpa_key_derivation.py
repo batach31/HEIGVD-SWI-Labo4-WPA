@@ -45,17 +45,17 @@ wpa=rdpcap("wpa_handshake.cap")
 # Important parameters for key derivation - most of them can be obtained from the pcap file
 passPhrase  = "actuelle"
 A           = "Pairwise key expansion" #this string is used in the pseudo-random function
-ssid        = wpa[0].info.decode("utf-8") # le beacon contient le ssid
-APmac       = a2b_hex(wpa[0].addr3.replace(':','')) # il contient aussi l'adresse de l'AP
-Clientmac   = a2b_hex(wpa[1].addr1.replace(':','')) # le client répond avec son adresse
+ssid        = wpa[0].info.decode("utf-8") # the beacon contains the ssid
+APmac       = a2b_hex(wpa[0].addr3.replace(':','')) # it also contains the AP address
+Clientmac   = a2b_hex(wpa[1].addr1.replace(':','')) # the client answers with its address
 
 # Authenticator and Supplicant Nonces
-ANonce      = wpa[5].load[13:45] # le premier handshake contient le ANonce # a2b_hex("90773b9a9661fee1f406e8989c912b45b029c652224e8b561417672ca7e0fd91")
-SNonce      = wpa[6].load[13:45] # le second handshake contient le SNonce # a2b_hex("7b3826876d14ff301aee7c1072b5e9091e21169841bce9ae8a3f24628f264577")
+ANonce      = wpa[5].load[13:45] # the first handshake contains the ANonce # a2b_hex("90773b9a9661fee1f406e8989c912b45b029c652224e8b561417672ca7e0fd91")
+SNonce      = wpa[6].load[13:45] # the second handshake contains the SNonce # a2b_hex("7b3826876d14ff301aee7c1072b5e9091e21169841bce9ae8a3f24628f264577")
 
 # This is the MIC contained in the 4th frame of the 4-way handshake
 # When attacking WPA, we would compare it to our own MIC calculated using passphrases from a dictionary
-mic_to_test = wpa[8].load[77:93] #c'est le 4eme handshake qui contient le mic #"36eef66540fa801ceee2fea9b7929b40" 
+mic_to_test = wpa[8].load[77:93] # The fourth handshake contains the mic #"36eef66540fa801ceee2fea9b7929b40" 
 
 B           = min(APmac,Clientmac)+max(APmac,Clientmac)+min(ANonce,SNonce)+max(ANonce,SNonce) #used in pseudo-random function
 
