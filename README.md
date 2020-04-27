@@ -57,7 +57,10 @@ Utilisant le script [wpa_key_derivation.py](https://github.com/arubinst/HEIGVD-S
    - Identiques &rarr; La passphrase utilisée est correcte
    - Différents &rarr; Essayer avec une nouvelle passphrase
 
-
+```
+Utilisation du script
+```
+![](./img/scaircrack.PNG)
 ### 3. Scairodump (Challenge)
 
 **Note : un délai supplémentaire peut être accordé pour ce dernier exercice - contactez-nous si jamais. Le reste du labo est à rendre à la date indiquée**
